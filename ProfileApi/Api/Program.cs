@@ -22,6 +22,8 @@ builder.Services.AddGlobalExceptionHandlerServices();
 builder.Services.AddLogicServices();
 builder.Services.AddPersistenceServices(builder.Configuration);
 
+builder.Services.AddHostedService<RpcServerService>();
+
 builder.Services.AddAuthenticationHelper();
 
 var app = builder.Build();
