@@ -1,4 +1,5 @@
 using Core.TraceLogic.Interfaces;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Serilog.Context;
@@ -22,29 +23,29 @@ public static class StartUpTraceId
         serviceCollection
             .TryAddScoped<ITraceIdAccessor>(provider => provider.GetRequiredService<TraceIdAccessor>());
 
+
+
         return serviceCollection;
     }
 }
 
-internal class TraceIdAccessor : ITraceReader, ITraceWriter, ITraceIdAccessor
+internal class TraceIdAccessor(IHttpContextAccessor httpContextAccessor) : ITraceReader, ITraceWriter, ITraceIdAccessor
 {
     public string Name => "TraceId";
 
-    private string _value;
+    private string _value = null!;
 
     public string GetValue()
     {
         return this._value;
     }
 
-    public void WriteValue(string value)
+    public void WriteValue(string? value)
     {
         if (string.IsNullOrWhiteSpace(value))
-        {
             value = Guid.NewGuid().ToString();
-        }
 
         this._value = value;
-        LogContext.PushProperty("TraceId", value);
+        LogContext.PushProperty(this.Name, value);
     }
 }
