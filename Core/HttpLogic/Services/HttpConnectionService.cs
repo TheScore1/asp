@@ -3,18 +3,15 @@ using Core.HttpLogic.Types;
 
 namespace Core.HttpLogic.Services;
 
-/// <inheritdoc />
 internal class HttpConnectionService : IHttpConnectionService
 {
 	private readonly IHttpClientFactory _httpClientFactory;
 
-	///
 	public HttpConnectionService(IHttpClientFactory httpClientFactory)
 	{
 		this._httpClientFactory = httpClientFactory;
 	}
 
-	/// <inheritdoc />
 	public HttpClient CreateHttpClient(HttpConnectionData httpConnectionData)
 	{
 		var httpClient = string.IsNullOrWhiteSpace(httpConnectionData.ClientName)
@@ -27,7 +24,6 @@ internal class HttpConnectionService : IHttpConnectionService
 		return httpClient;
 	}
 
-	/// <inheritdoc />
 	public Task<HttpResponseMessage> SendRequestAsync(HttpRequestMessage httpRequestMessage, HttpClient httpClient,
 		CancellationToken cancellationToken,
 		HttpCompletionOption httpCompletionOption = HttpCompletionOption.ResponseContentRead)

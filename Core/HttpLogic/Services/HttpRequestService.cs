@@ -11,13 +11,11 @@ using ContentType = Core.HttpLogic.Types.ContentType;
 
 namespace Core.HttpLogic.Services;
 
-/// <inheritdoc />
 internal class HttpRequestService : IHttpRequestService
 {
 	private readonly IHttpConnectionService _httpConnectionService;
 	private readonly IEnumerable<ITraceWriter> _traceWriterList;
 
-	///
 	public HttpRequestService(
 		IHttpConnectionService httpConnectionService,
 		IEnumerable<ITraceWriter> traceWriterList)
@@ -26,7 +24,6 @@ internal class HttpRequestService : IHttpRequestService
 		this._traceWriterList = traceWriterList;
 	}
 
-	/// <inheritdoc />
 	public async Task<HttpResponse<TResponse>> SendRequestAsync<TResponse>(HttpRequestData requestData,
 		HttpConnectionData connectionData)
 	{
@@ -124,12 +121,12 @@ internal class HttpRequestService : IHttpRequestService
 	private static async Task<TResponse?> ParseContent<TResponse>(HttpResponseMessage response)
 	{
 		if (response.Content.Headers.ContentType is null)
-			throw new ArgumentException("Не удалось определить тип контента");
+			throw new ArgumentException("Cant define content type");
 
 		return response.Content.Headers.ContentType.MediaType switch
 		{
 			MediaTypeNames.Application.Json => await response.Content.ReadFromJsonAsync<TResponse>(),
-			_ => throw new NotImplementedException("Не поддерживаемый тип контента")
+			_ => throw new NotImplementedException("App doesnt support this content type")
 		};
 	}
 }

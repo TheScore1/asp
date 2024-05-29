@@ -8,14 +8,14 @@ public class AuthenticationHelper(IHttpContextAccessor httpContextAccessor) : IA
     public Result<Guid> GetUserId()
     {
         if (httpContextAccessor.HttpContext is null)
-            return Result.Failure<Guid>("Не удалось прочитать http context");
+            return Result.Failure<Guid>("Cant read http context");
 
         var id = httpContextAccessor.HttpContext.Request.Headers["UserId"];
         if (id.Count == 0)
-            return Result.Failure<Guid>("Нет заголовка с id");
+            return Result.Failure<Guid>("No header with id");
 
         return Guid.TryParse(id[0], out var guid)
             ? guid
-            : Result.Failure<Guid>("Не удалось преобразовать к Guid");
+            : Result.Failure<Guid>("Cant transform to Guid");
     }
 }
