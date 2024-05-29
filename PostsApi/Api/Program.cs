@@ -35,6 +35,8 @@ builder.Services.AddPersistenceServices(builder.Configuration);
 builder.Host.AddLoggerServices();
 builder.Services.AddMappingServices();
 
+builder.Services.TryAddTraceId();
+
 builder.Services.AddAuthenticationHelper();
 
 builder.Services.AddHttpRequestService();
